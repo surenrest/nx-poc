@@ -93,7 +93,26 @@
             "jestConfig": "apps/service-a/jest.config.js",
             "passWithNoTests": true
           }
-        }
+        },
+        "deploy": {
+
+                  "executor": "@nrwl/workspace:run-commands",
+
+                      "options": {
+
+                      "commands": [
+
+                          {
+
+                              "command": "make deploy"
+
+                          }
+
+                      ]
+
+                  }
+
+              }
       }
     },
     "service-b": {
@@ -144,7 +163,26 @@
             "jestConfig": "apps/service-b/jest.config.js",
             "passWithNoTests": true
           }
-        }
+        },
+        "deploy": {
+
+                  "executor": "@nrwl/workspace:run-commands",
+
+                      "options": {
+
+                      "commands": [
+
+                          {
+
+                              "command": "make deploy"
+
+                          }
+
+                      ]
+
+                  }
+
+              }
       }
     }
   },
