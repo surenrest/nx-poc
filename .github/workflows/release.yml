@@ -15,6 +15,11 @@ jobs:
         with:
           fetch-depth: 0 # OR "2" -> To retrieve the preceding commit.
 
+      - name: Instal dependencies
+        run: |
+          npm install -g nx
+          npm ci
+
       - name: Get latest release info
         id: latest-release
         uses: thebritican/fetch-latest-release@v2.0.0
