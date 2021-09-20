@@ -30,6 +30,5 @@ jobs:
           echo ::set-output name=that_sha::$(git rev-list -n 1 $(git tag | grep $env | sed '1!G;h;$!d' | head -n 2 | tail -1))
 
       - name: Deploy
-        if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           nx affected --target=deploy --base={{steps.vars.outputs.that_sha}} --head={{steps.vars.outputs.this_sha}}
