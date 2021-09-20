@@ -11,11 +11,15 @@ on:
 jobs:
   build-serviceA:
     runs-on: ubuntu-latest # windows-latest | macos-latest
-    name: serviceA
+    name: All
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0 # OR "2" -> To retrieve the preceding commit.
+
+      - name: Install nx
+        run: |
+          npm install -g nx
 
       - name: Lint
         run: |

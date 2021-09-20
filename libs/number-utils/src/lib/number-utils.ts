@@ -1,3 +1,3 @@
 export function numberUtils(): string {
-  return 'number-utils yo';
+  return 'number-utils yo yo';
 }
