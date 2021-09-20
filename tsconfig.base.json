@@ -14,7 +14,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@monorepo/module-a": ["libs/module-a/src/index.ts"],
+      "@monorepo/number-utils": ["libs/number-utils/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

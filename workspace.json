@@ -1,7 +1,155 @@
 {
   "version": 2,
-  "projects": {},
+  "projects": {
+    "module-a": {
+      "root": "libs/module-a",
+      "sourceRoot": "libs/module-a/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/module-a/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/module-a"],
+          "options": {
+            "jestConfig": "libs/module-a/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "number-utils": {
+      "root": "libs/number-utils",
+      "sourceRoot": "libs/number-utils/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/number-utils/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/number-utils"],
+          "options": {
+            "jestConfig": "libs/number-utils/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "service-a": {
+      "root": "apps/service-a",
+      "sourceRoot": "apps/service-a/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/service-a",
+            "main": "apps/service-a/src/main.ts",
+            "tsConfig": "apps/service-a/tsconfig.app.json",
+            "assets": ["apps/service-a/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/service-a/src/environments/environment.ts",
+                  "with": "apps/service-a/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "service-a:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/service-a/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/service-a"],
+          "options": {
+            "jestConfig": "apps/service-a/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "service-b": {
+      "root": "apps/service-b",
+      "sourceRoot": "apps/service-b/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/service-b",
+            "main": "apps/service-b/src/main.ts",
+            "tsConfig": "apps/service-b/tsconfig.app.json",
+            "assets": ["apps/service-b/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/service-b/src/environments/environment.ts",
+                  "with": "apps/service-b/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "service-b:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/service-b/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/service-b"],
+          "options": {
+            "jestConfig": "apps/service-b/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  },
   "cli": {
-    "defaultCollection": "@nrwl/workspace"
-  }
+    "defaultCollection": "@nrwl/node"
+  },
+  "defaultProject": "service-a"
 }
