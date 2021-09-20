@@ -1,2 +1,2 @@
-build:
+deploy:
   echo "Deploying service-b"
