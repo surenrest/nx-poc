@@ -1,3 +1,3 @@
 export function moduleA(): string {
-  return 'module-a yoyo';
+  return 'module-a yoyo boom !!!';
 }
