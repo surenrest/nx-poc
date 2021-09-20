@@ -1,2 +1,2 @@
 deploy:
-  echo "Deploying service-b"
+	echo "Deploying service-b"
