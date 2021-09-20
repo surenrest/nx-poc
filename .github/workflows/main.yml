@@ -24,8 +24,8 @@ jobs:
 
       - name: Lint
         run: |
-          nx affected --target=lint --base=master --head=HEAD
+          nx affected --target=lint --base=origin/master --head=HEAD
 
       - name: Test
         run: |
-          nx affected --target=test --base=master --head=HEAD
+          nx affected --target=test --base=origin/master --head=HEAD
