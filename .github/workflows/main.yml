@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build-serviceA:
+    runs-on: ubuntu-latest # windows-latest | macos-latest
+    name: serviceA
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # OR "2" -> To retrieve the preceding commit.
+
+      - name: Lint
+        run: |
+          nx affected --target=lint --base=master --head=HEAD
+
+      - name: Test
+        run: |
+          nx affected --target=test --base=master --head=HEAD

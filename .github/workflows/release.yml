@@ -1,0 +1,118 @@
+# a way to force release all the services through content in release note
+# release all the services if its a first uat or prod release
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release-moduleA:
+    runs-on: ubuntu-latest # windows-latest | macos-latest
+    name: Release ModuleA
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # OR "2" -> To retrieve the preceding commit.
+
+      - name: Get latest release info
+        id: latest-release
+        uses: thebritican/fetch-latest-release@v2.0.0
+        with:
+          github_token: ${{ github.token }}
+
+      - name: Get sha of this release
+        id: vars
+        run: |
+          env=$(awk -F- '{print $2}' <<< '${{steps.latest-release.outputs.tag_name}}')
+          echo $env
+          echo ::set-output name=this_sha::$(git rev-list -n 1 $(git tag | grep $env | sed '1!G;h;$!d' | head -n 1))
+          echo ::set-output name=that_sha::$(git rev-list -n 1 $(git tag | grep $env | sed '1!G;h;$!d' | head -n 2 | tail -1))
+
+      - name: Check files in moduleA changed
+        id: changed-files
+        uses: tj-actions/changed-files@v1.1.2
+        with:
+          sha: ${{steps.vars.outputs.this_sha}}
+          base_sha: ${{steps.vars.outputs.that_sha}}
+          files: |
+            moduleA/index.txt
+
+      - name: Deploy
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo 'ModuleA changed gonna deploy it'
+
+  release-serviceA:
+    runs-on: ubuntu-latest # windows-latest | macos-latest
+    name: Release ServiceA
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # OR "2" -> To retrieve the preceding commit.
+
+      - name: Get latest release info
+        id: latest-release
+        uses: thebritican/fetch-latest-release@v2.0.0
+        with:
+          github_token: ${{ github.token }}
+
+      - name: Get sha of this release
+        id: vars
+        run: |
+          env=$(awk -F- '{print $2}' <<< '${{steps.latest-release.outputs.tag_name}}')
+          echo $env
+          echo ::set-output name=this_sha::$(git rev-list -n 1 $(git tag | grep $env | sed '1!G;h;$!d' | head -n 1))
+          echo ::set-output name=that_sha::$(git rev-list -n 1 $(git tag | grep $env | sed '1!G;h;$!d' | head -n 2 | tail -1))
+
+      - name: Check files in moduleA changed
+        id: changed-files
+        uses: tj-actions/changed-files@v1.1.2
+        with:
+          sha: ${{steps.vars.outputs.this_sha}}
+          base_sha: ${{steps.vars.outputs.that_sha}}
+          files: |
+            moduleA
+            serviceA
+
+      - name: Deploy
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo 'serviceA or its dependency changed gonna deploy it'
+
+  release-serviceB:
+    runs-on: ubuntu-latest # windows-latest | macos-latest
+    name: Release ServiceB
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # OR "2" -> To retrieve the preceding commit.
+
+      - name: Get latest release info
+        id: latest-release
+        uses: thebritican/fetch-latest-release@v2.0.0
+        with:
+          github_token: ${{ github.token }}
+
+      - name: Get sha of this release
+        id: vars
+        run: |
+          env=$(awk -F- '{print $2}' <<< '${{steps.latest-release.outputs.tag_name}}')
+          echo $env
+          echo ::set-output name=this_sha::$(git rev-list -n 1 $(git tag | grep $env | sed '1!G;h;$!d' | head -n 1))
+          echo ::set-output name=that_sha::$(git rev-list -n 1 $(git tag | grep $env | sed '1!G;h;$!d' | head -n 2 | tail -1))
+
+      - name: Check files in moduleA changed
+        id: changed-files
+        uses: tj-actions/changed-files@v1.1.2
+        with:
+          sha: ${{steps.vars.outputs.this_sha}}
+          base_sha: ${{steps.vars.outputs.that_sha}}
+          files: |
+            moduleA
+            serviceB
+
+      - name: Deploy
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo 'serviceB or its dependencies changed gonna deploy it'
