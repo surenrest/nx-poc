@@ -30,9 +30,21 @@ jobs:
         id: vars
         run: |
           env=$(awk -F- '{print $2}' <<< '${{steps.latest-release.outputs.tag_name}}')
-          echo $env
-          echo ::set-output name=this_sha::$(git rev-list -n 1 $(git tag | grep $env | sed '1!G;h;$!d' | head -n 1))
-          echo ::set-output name=that_sha::$(git rev-list -n 1 $(git tag | grep $env | sed '1!G;h;$!d' | head -n 2 | tail -1))
+          echo env:: $env
+
+          this_release=$(git tag | grep $env | sed '1!G;h;$!d' | head -n 1)
+          echo This release version: $this_release
+
+          echo ::set-output name=this_sha::$(git rev-list -n 1 $this_release)
+
+          previous_release=$(git tag | grep $env | sed '1!G;h;$!d' | head -n 2 | tail -1)
+          echo Previous release version:: $previous_release
+
+          echo ::set-output name=that_sha::$(git rev-list -n 1 $previous_release)
+
+          ## todo
+          ## option for deploying everything
+          ## handle the scenario where the stack is being deploying for the first time
 
       - name: Deploy
         run: |
