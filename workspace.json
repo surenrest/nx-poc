@@ -99,7 +99,7 @@
                   "executor": "@nrwl/workspace:run-commands",
 
                       "options": {
-
+                      "cwd": "apps/service-a",
                       "commands": [
 
                           {
@@ -169,6 +169,7 @@
                   "executor": "@nrwl/workspace:run-commands",
 
                       "options": {
+                        "cwd": "apps/service-b",
 
                       "commands": [
 
