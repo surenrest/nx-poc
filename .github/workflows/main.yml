@@ -17,9 +17,10 @@ jobs:
         with:
           fetch-depth: 0 # OR "2" -> To retrieve the preceding commit.
 
-      - name: Install nx
+      - name: Install dependencies
         run: |
           npm install -g nx
+          npm ci
 
       - name: Lint
         run: |
