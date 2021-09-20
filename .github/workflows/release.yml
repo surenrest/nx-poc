@@ -36,4 +36,4 @@ jobs:
 
       - name: Deploy
         run: |
-          nx affected --target=deploy --base={{steps.vars.outputs.that_sha}} --head={{steps.vars.outputs.this_sha}}
+          nx affected --target=deploy --base=${{steps.vars.outputs.that_sha}} --head=${{steps.vars.outputs.this_sha}}
