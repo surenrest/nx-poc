@@ -29,7 +29,7 @@ jobs:
       - name: Get sha of this release
         id: vars
         run: |
-          if ${{steps.latest-release.outputs.body}} = "all"; then
+          if "${{steps.latest-release.outputs.body}}" = "all"; then
             echo ::set-output name=release_all::true
           else
             env=$(awk -F- '{print $2}' <<< '${{steps.latest-release.outputs.tag_name}}')
@@ -48,7 +48,7 @@ jobs:
 
       - name: Deploy
         run: |
-          if ${{steps.vars.outputs.release_all}} = "true"; then
+          if "${{steps.vars.outputs.release_all}}" = "true"; then
             nx run-many --target=deploy --all
           else
             nx affected --target=deploy --base=${{steps.vars.outputs.that_sha}} --head=${{steps.vars.outputs.this_sha}}
