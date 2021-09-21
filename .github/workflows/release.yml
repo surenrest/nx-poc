@@ -29,23 +29,27 @@ jobs:
       - name: Get sha of this release
         id: vars
         run: |
-          env=$(awk -F- '{print $2}' <<< '${{steps.latest-release.outputs.tag_name}}')
-          echo env:: $env
+          if ${{steps.latest-release.outputs.body}} = "all"; then
+            echo ::set-output name=release_all::true
+          else
+            env=$(awk -F- '{print $2}' <<< '${{steps.latest-release.outputs.tag_name}}')
+            echo env:: $env
 
-          this_release=$(git tag | grep $env | sed '1!G;h;$!d' | head -n 1)
-          echo This release version: $this_release
+            this_release=$(git tag | grep $env | sed '1!G;h;$!d' | head -n 1)
+            echo This release version: $this_release
 
-          echo ::set-output name=this_sha::$(git rev-list -n 1 $this_release)
+            echo ::set-output name=this_sha::$(git rev-list -n 1 $this_release)
 
-          previous_release=$(git tag | grep $env | sed '1!G;h;$!d' | head -n 2 | tail -1)
-          echo Previous release version:: $previous_release
+            previous_release=$(git tag | grep $env | sed '1!G;h;$!d' | head -n 2 | tail -1)
+            echo Previous release version:: $previous_release
 
-          echo ::set-output name=that_sha::$(git rev-list -n 1 $previous_release)
-
-          ## todo
-          ## option for deploying everything
-          ## handle the scenario where the stack is being deploying for the first time
+            echo ::set-output name=that_sha::$(git rev-list -n 1 $previous_release)
+          fi
 
       - name: Deploy
         run: |
-          nx affected --target=deploy --base=${{steps.vars.outputs.that_sha}} --head=${{steps.vars.outputs.this_sha}}
+          if ${{steps.vars.outputs.release_all}} = "true"; then
+            nx run-many --target=deploy --all
+          else
+            nx affected --target=deploy --base=${{steps.vars.outputs.that_sha}} --head=${{steps.vars.outputs.this_sha}}
+          fi
