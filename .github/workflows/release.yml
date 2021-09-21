@@ -43,8 +43,8 @@ jobs:
             previous_release=$(git tag | grep $env | sed '1!G;h;$!d' | head -n 2 | tail -1)
             echo Previous release version:: $previous_release
 
-            if [[ -z $previous_release ]] ; then
-              echo This is the first release. Getting the first commit sha.
+            if [[ "$previous_release" = "$this_release" ]] ; then
+              echo This is the first release for this env. Getting the first commit sha.
               echo ::set-output name=that_sha::$(git rev-list --max-parents=0 HEAD)
             else
               echo ::set-output name=that_sha::$(git rev-list -n 1 $previous_release)
